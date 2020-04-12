@@ -9,7 +9,7 @@
 
 ### ✨ Demo
 
-![Demo](./assets/test3.gif)
+![Demo](./Assets/test3.gif)
 
 ## Requires
   * node.js
