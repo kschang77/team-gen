@@ -294,19 +294,19 @@ function whatAboutIntern() {
 function renderOutput() {
   console.log("-----")
   console.log("Let's render some output")
-  console.log(employees)
+  // console.log(employees)
   console.log("-----")
   // call htmlRenderer.js
   try {
     var myHTML = render(employees)
-    console.log(myHTML)
+    // console.log(myHTML)
   }
   catch (err) {
     console.error(err)
     throw "render failed!"
   }
   try {
-    console.log(outputPath)
+    // console.log(outputPath)
     fs.writeFileSync(outputPath, myHTML)
   } catch (err) {
     console.error(err)
