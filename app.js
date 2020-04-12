@@ -6,9 +6,14 @@ const path = require("path");
 const fs = require("fs");
 const figlet = require("figlet")
 const chalk = require("chalk")
-const clear = require("clear")
+// const clear = require("clear")
 
+//gets current directory, look for output subdir, put team.html into that. 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
+// create subdir if not exist
+if (!fs.existsSync(OUTPUT_DIR)) {
+  fs.mkdirSync(OUTPUT_DIR)
+}
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
@@ -19,7 +24,8 @@ const render = require("./lib/htmlRenderer");
 
 // no employees to start
 employees = [];
-// this.quitnow = false;
+
+keepGoing = true;
 
 function start() {
 
@@ -28,6 +34,8 @@ function start() {
     horizontalLayout: 'fitted',
     verticalLayout: 'default'
   })));
+  console.log("V0.1 by Kasey K S Chang (c) 2020")
+  console.log("")
 
   // console.log("---- Available fonts ----")
   // figlet.fonts(function (err, fonts) {
@@ -47,25 +55,25 @@ async function doEnterEmployee() {
   try {
     const typeOfEmployee = await whatTypeofEmployee();
 
-    if (typeOfEmployee.choice === "Stop Entry") {
-      // go back to start
-      quit();
-    } else {
+    if (typeOfEmployee.choice !== "Stop Entry") {
       // react to Manager, Engineer, or Intern
       if (typeOfEmployee.choice === "Manager") {
-        enterManager();
+        await enterManager();
       } else if (typeOfEmployee.choice === "Engineer") {
-        enterEngineer();
+        await enterEngineer();
       } else {
         // must be Intern
-        enterIntern();
+        await enterIntern();
       }
+      // call self, do it one more time
+      // doEnterEmployee();
+    } else {
+      keepGoing = false;
     }
-    // call self, do it one more time
-    doEnterEmployee();
   }
   catch (e) {
-    throw "whatTypeofEmployee failed!"
+    console.error(e)
+    throw "doEnterEmployee failed!"
   }
 }
 
@@ -84,24 +92,202 @@ function whatTypeofEmployee() {
 };
 
 
-function enterManager() {
+async function enterManager() {
   console.log("-----")
-  console.log("Manager Entered")
+  console.log("Enter Manager")
   console.log("-----")
+  try {
+    const tAnswer = await whatAboutManager();
+    var tManager = new Manager(
+      tAnswer.managerName,
+      tAnswer.managerId,
+      tAnswer.managerEmail,
+      tAnswer.managerOffice
+    )
+    employees.push(tManager)
+    console.log("Manager Added")
+    return true
+  }
+  catch (e) {
+    console.error(e)
+    throw "enterManager failed!"
+  }
 }
 
-function enterEngineer() {
+function whatAboutManager() {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "managerName",
+        message: "Manager's full name please? ",
+        // makes sure name is not blank
+        validate: function validateName(name) {
+          return name !== '';
+        }
+      },
+      {
+        type: "input",
+        name: "managerId",
+        message: "Manager's employeeId please? ",
+        //makes sure ID is an integer
+        validate: function validateId(name) {
+          return !Number.isInteger(name);
+        }
+      },
+      {
+        type: "input",
+        name: "managerEmail",
+        message: "Manager's Email Address please? ",
+        // checks that Email is not blank
+        validate: function validateEmail(name) {
+          return name !== '';
+        }
+      },
+      {
+        type: "input",
+        name: "managerOffice",
+        message: "Manager's Office Number please? ",
+        // checks that Office Number is integer
+        validate: function validateOffice(name) {
+          return !Number.isInteger(name);
+        }
+      }
+    ])
 
-  console.log("-----")
-  console.log("Engineer entered")
-  console.log("-----")
+
 }
 
-function enterIntern() {
+async function enterEngineer() {
   console.log("-----")
-  console.log("Intern entered")
+  console.log("Enter Engineer")
   console.log("-----")
+  try {
+    const tAnswer = await whatAboutEngineer();
+    var tEngineer = new Engineer(
+      tAnswer.engineerName,
+      tAnswer.engineerId,
+      tAnswer.engineerEmail,
+      tAnswer.engineerGithub
+    )
+    employees.push(tEngineer)
+    console.log("Engineer Added")
+    return true
+  }
+  catch (e) {
+    console.error(e)
+    throw "enterEngineer failed!"
+  }
+}
 
+function whatAboutEngineer() {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "engineerName",
+        message: "Engineer's full name please? ",
+        // makes sure name is not blank
+        validate: function validateName(name) {
+          return name !== '';
+        }
+      },
+      {
+        type: "input",
+        name: "engineerId",
+        message: "Engineer's employeeId please? ",
+        //makes sure ID is an integer
+        validate: function validateId(name) {
+          return !Number.isInteger(name);
+        }
+      },
+      {
+        type: "input",
+        name: "engineerEmail",
+        message: "Engineer's Email Address please? ",
+        // checks that Email is not blank
+        validate: function validateEmail(name) {
+          return name !== '';
+        }
+      },
+      {
+        type: "input",
+        name: "engineerGithub",
+        message: "engineer's GithubID please? ",
+        // checks that githubid is not blank
+        validate: function validateGithub(name) {
+          return name !== "";
+        }
+      }
+    ])
+
+
+}
+
+
+async function enterIntern() {
+  console.log("-----")
+  console.log("Enter Intern")
+  console.log("-----")
+  try {
+    const tAnswer = await whatAboutIntern();
+    var tIntern = new Intern(
+      tAnswer.internName,
+      tAnswer.internId,
+      tAnswer.internEmail,
+      tAnswer.internSchool
+    )
+    employees.push(tIntern)
+    console.log("Intern Added")
+    return true
+  }
+  catch (e) {
+    console.error(e)
+    throw "enterIntern failed!"
+  }
+}
+
+
+function whatAboutIntern() {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "internName",
+        message: "Intern's full name please? ",
+        // makes sure name is not blank
+        validate: function validateName(name) {
+          return name !== '';
+        }
+      },
+      {
+        type: "input",
+        name: "internId",
+        message: "Intern's employeeId please? ",
+        //makes sure ID is an integer
+        validate: function validateId(name) {
+          return !Number.isInteger(name);
+        }
+      },
+      {
+        type: "input",
+        name: "internEmail",
+        message: "Intern's Email Address please? ",
+        // checks that Email is not blank
+        validate: function validateEmail(name) {
+          return name !== '';
+        }
+      },
+      {
+        type: "input",
+        name: "internSchool",
+        message: "Intern's School please? ",
+        // checks that githubid is not blank
+        validate: function validateSchool(name) {
+          return name !== "";
+        }
+      }
+    ])
 }
 
 
@@ -110,19 +296,43 @@ function renderOutput() {
   console.log("Let's render some output")
   console.log(employees)
   console.log("-----")
+  // call htmlRenderer.js
+  try {
+    var myHTML = render(employees)
+    console.log(myHTML)
+  }
+  catch (err) {
+    console.error(err)
+    throw "render failed!"
+  }
+  try {
+    console.log(outputPath)
+    fs.writeFileSync(outputPath, myHTML)
+  } catch (err) {
+    console.error(err)
+    throw "writefilesync failed!"
+  }
+
 }
 
 
 function quit() {
   renderOutput();
   console.log("-----")
-  console.log("And that's the end!")
-  process.exit(0);
+  console.log("Thank you for using Team-Gen!")
+  console.log("Your output is in " + outputPath)
+  // process.exit(0);
+}
+
+async function mainloop() {
+  while (keepGoing) {
+    await doEnterEmployee();
+  }
+  quit();
 }
 
 start();
-doEnterEmployee();
-
+mainloop();
 // var employees = [];  // contains all employees entered
 
 //L1: Add employee / Render and Quit
