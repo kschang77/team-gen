@@ -57,18 +57,19 @@ At this time, validation is rather minimal. There is no attempt to search for du
 ### make sure Name, Github, and School are not blank
 
 ```        
-          validate: function validateNonBlank(name) {
+        function validateNonBlank(name) {
           if (name === '') {
             return "This field cannot be blank!"
           } else {
             return true
           }
+         }
 ```
 
 ### make sure employeeID, phone and room number are integers
 
 ```       
-        validate: function validateInt(name) {
+        function validateInt(name) {
           if (Number.isInteger(Number(name))) {
             return true
           } else {
@@ -80,7 +81,7 @@ At this time, validation is rather minimal. There is no attempt to search for du
 ### make sure email conforms to proper pattern (@,., etc.) 
 
 ```       
-        validate: function validateEmail(name) {
+        function validateEmail(name) {
           if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(name)) {
             return (true)
           }
@@ -88,9 +89,13 @@ At this time, validation is rather minimal. There is no attempt to search for du
         }
  ```
 
-NOTE: Credit to w3resources for the regex pattern and code for this section. 
+NOTE: Credit to w3resources for the regex pattern and code for email validation. 
+
+To minimize code duplication (DRY) the three functions were extracted and made separate so they can be reused instead of new anonymous functions decalred each time, that was in the old version. 
 
 As this is meant to be "run once" app, there is no edit or delete function.  If you made a mistake, you need to either edit the outputfile directly, or run this app again to generate a new outputfile. 
+
+It may be possible to write a more interactive interface to allow the user to preview the employee entered thus far, separated by type, edit/delete employees, before finally ending the app to generate the output. However, that is beyond the scope of this app. 
 
 
 ## Author
