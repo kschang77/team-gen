@@ -77,6 +77,19 @@ async function doEnterEmployee() {
   }
 }
 
+function validateNonDupeId(id) {
+  //incorporated validateInteger
+  if (!validateInteger(id)) {
+    return false
+  }
+  for (var i = 0; i < employees.length; i++) {
+    if (employees[i].id === id) {
+      return "ID already used by a different employee!"
+    }
+  }
+  return true
+}
+
 function validateEmail(email) {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return true
@@ -154,7 +167,7 @@ function whatAboutManager() {
         name: "managerId",
         message: "Manager's employeeId (integer) please? ",
         //makes sure ID is an integer
-        validate: validateInteger
+        validate: validateNonDupeId
       },
       {
         type: "input",
@@ -212,7 +225,7 @@ function whatAboutEngineer() {
         name: "engineerId",
         message: "Engineer's employeeId (integer) please? ",
         //makes sure ID is an integer
-        validate: validateInteger
+        validate: validateNonDupeId
       },
       {
         type: "input",
@@ -272,7 +285,7 @@ function whatAboutIntern() {
         name: "internId",
         message: "Intern's employeeId (integer) please? ",
         //makes sure ID is an integer
-        validate: validateInteger
+        validate: validateNonDupeId
       },
       {
         type: "input",
