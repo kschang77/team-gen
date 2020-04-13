@@ -52,11 +52,12 @@ Upon user choosing "Stop Entry", the _team.html_ is generated based on the vario
 
 ## Limitations
 
-At this time, validation is rather minimal. There is no attempt to search for duplicates upon entering new employee. Indeeed, the only validations done are 
+At this time, validation is rather minimal. There is no attempt to search for duplicates when entering new employee. Indeeed, the only validations done are 
 
 ### make sure Name, Github, and School are not blank
 
-```        validate: function validateNonBlank(name) {
+```        
+          validate: function validateNonBlank(name) {
           if (name === '') {
             return "This field cannot be blank!"
           } else {
@@ -66,7 +67,8 @@ At this time, validation is rather minimal. There is no attempt to search for du
 
 ### make sure employeeID, phone and room number are integers
 
-```       validate: function validateInt(name) {
+```       
+        validate: function validateInt(name) {
           if (Number.isInteger(Number(name))) {
             return true
           } else {
@@ -77,8 +79,8 @@ At this time, validation is rather minimal. There is no attempt to search for du
 
 ### make sure email conforms to proper pattern (@,., etc.) 
 
-```       validate: function validateEmail(name) {
-          // return name !== '';
+```       
+        validate: function validateEmail(name) {
           if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(name)) {
             return (true)
           }
