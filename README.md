@@ -49,10 +49,32 @@ Upon user choosing "Stop Entry", the _team.html_ is generated based on the vario
 
 **Please note** that if _output_ subdirectory doesn't exist, it will be created. And if _team.html_ already exists in the outputpath, it will be **overwritten**. 
 
+NOTE: Nadine Bundchush was able to fix a bug in _htmlrenderer.js_ that introduced an errant comma in the resultant HTML page. 
+
 
 ## Limitations
 
-At this time, validation is rather minimal. There is no attempt to search for duplicates when entering new employee. Indeeed, the only validations done are 
+At this time, there are four types of validation
+
+### make sure EmployeeID is not Duplicated
+
+NOTE: This also uses _validateInteger_ defined later
+
+```
+         function validateNonDupeId(id) {
+           //incorporated validateInteger
+           if (validateInteger(id) !== true) {
+             return "That really is not an integer!"
+           }
+           //bruteforce search the employee array
+           for (var i = 0; i < employees.length; i++) {
+             if (employees[i].id === id) {
+               return "ID already used by a different employee!"
+             }
+           }
+           return true
+         }
+```
 
 ### make sure Name, Github, and School are not blank
 
@@ -91,7 +113,7 @@ At this time, validation is rather minimal. There is no attempt to search for du
 
 NOTE: Credit to w3resources for the regex pattern and code for email validation. 
 
-To minimize code duplication (DRY) the three functions were extracted and made separate so they can be reused instead of new anonymous functions decalred each time, that was in the old version. 
+To minimize code duplication (DRY=Don't Repeat Yourself) the four functions were extracted and made separate so they can be reused instead of new anonymous functions decalred each time. Non-dupe ID validation was added last minute, but tested. 
 
 As this is meant to be "run once" app, there is no edit or delete function.  If you made a mistake, you need to either edit the outputfile directly, or run this app again to generate a new outputfile. 
 
