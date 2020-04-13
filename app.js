@@ -77,6 +77,31 @@ async function doEnterEmployee() {
   }
 }
 
+function validateEmail(email) {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    return true
+  }
+  return "Invalid email address!"
+}
+
+function validateNonBlank(str) {
+  if (str == '') {
+    return "This cannot be blank!"
+  } else {
+    return true
+  }
+}
+
+function validateInteger(int) {
+  if (Number.isInteger(Number(int))) {
+    return true
+  } else {
+    return "That is not an integer!"
+  }
+}
+
+
+
 function whatTypeofEmployee() {
   // what type of employee?
 
@@ -122,36 +147,28 @@ function whatAboutManager() {
         name: "managerName",
         message: "Manager's full name please? ",
         // makes sure name is not blank
-        validate: function validateName(name) {
-          return name !== '';
-        }
+        validate: validateNonBlank
       },
       {
         type: "input",
         name: "managerId",
-        message: "Manager's employeeId please? ",
+        message: "Manager's employeeId (integer) please? ",
         //makes sure ID is an integer
-        validate: function validateId(name) {
-          return !Number.isInteger(name);
-        }
+        validate: validateInteger
       },
       {
         type: "input",
         name: "managerEmail",
         message: "Manager's Email Address please? ",
-        // checks that Email is not blank
-        validate: function validateEmail(name) {
-          return name !== '';
-        }
+        // checks that Email fits regex
+        validate: validateEmail
       },
       {
         type: "input",
         name: "managerOffice",
-        message: "Manager's Office Number please? ",
+        message: "Manager's Office Number (integer) please? ",
         // checks that Office Number is integer
-        validate: function validateOffice(name) {
-          return !Number.isInteger(name);
-        }
+        validate: validateInteger
       }
     ])
 
@@ -188,36 +205,28 @@ function whatAboutEngineer() {
         name: "engineerName",
         message: "Engineer's full name please? ",
         // makes sure name is not blank
-        validate: function validateName(name) {
-          return name !== '';
-        }
+        validate: validateNonBlank
       },
       {
         type: "input",
         name: "engineerId",
-        message: "Engineer's employeeId please? ",
+        message: "Engineer's employeeId (integer) please? ",
         //makes sure ID is an integer
-        validate: function validateId(name) {
-          return !Number.isInteger(name);
-        }
+        validate: validateInteger
       },
       {
         type: "input",
         name: "engineerEmail",
         message: "Engineer's Email Address please? ",
-        // checks that Email is not blank
-        validate: function validateEmail(name) {
-          return name !== '';
-        }
+        // checks that Email fits regex
+        validate: validateEmail
       },
       {
         type: "input",
         name: "engineerGithub",
         message: "engineer's GithubID please? ",
         // checks that githubid is not blank
-        validate: function validateGithub(name) {
-          return name !== "";
-        }
+        validate: validateNonBlank
       }
     ])
 
@@ -256,36 +265,28 @@ function whatAboutIntern() {
         name: "internName",
         message: "Intern's full name please? ",
         // makes sure name is not blank
-        validate: function validateName(name) {
-          return name !== '';
-        }
+        validate: validateNonBlank
       },
       {
         type: "input",
         name: "internId",
-        message: "Intern's employeeId please? ",
+        message: "Intern's employeeId (integer) please? ",
         //makes sure ID is an integer
-        validate: function validateId(name) {
-          return !Number.isInteger(name);
-        }
+        validate: validateInteger
       },
       {
         type: "input",
         name: "internEmail",
         message: "Intern's Email Address please? ",
-        // checks that Email is not blank
-        validate: function validateEmail(name) {
-          return name !== '';
-        }
+        // checks that Email fits regex
+        validate: validateEmail
       },
       {
         type: "input",
         name: "internSchool",
         message: "Intern's School please? ",
         // checks that githubid is not blank
-        validate: function validateSchool(name) {
-          return name !== "";
-        }
+        validate: validateNonBlank
       }
     ])
 }
